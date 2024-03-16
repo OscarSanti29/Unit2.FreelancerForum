@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     const p = document.createElement("p");
 
-    p.textContent= `${averageprice()}`;
+    p.textContent= `The average is ${averageprice()}`;
 
     div.append(p);
 });
