@@ -1,67 +1,42 @@
-const names = ["Alice", "Bob", "Carol", "Carlos", "Amy"];
-
-const occupations = ["Writer", "Teacher", "Programmer", "Baker", "Plumber"];
-
+const names = ['Alice', 'Bob', 'Carol', 'Carlos', 'Amy'];
+const occupations = ['Writer', 'Teacher', 'Programmer', 'Baker', 'Plumber'];
 const prices = [20, 30, 40, 50, 60, 70, 80];
-
 const freelancers = [];
+const maxLancers = 7;
 
-const maxlancers = 7;
+const addRandomLancerIntervalId = setInterval(addRandomLancer, 1000);
 
-const maxavearge = 7;
-
-const addrandomlancerIntervalId = setInterval(addrandomlancer, 1000);
-const loadaverage = setInterval(averageprice, 1000);
+let averagePrice = 0;
 
 function render() {
-    const lancers = document.querySelector("#lancers");
-    
-    lancers.innerHTML = '';
-    
-    const lancerElements = freelancers.map((lancer) => {
-        const element = document.createElement("li");
-        
-        element.textContent = `${lancer.name} - ${lancer.occupation} - $${lancer.price}`;
-        
-        return element;
-    });
-    lancers.append(...lancerElements);
+  const lancersList = document.querySelector('#lancers');
+  const averageTitle = document.querySelector('#average');
+  lancersList.innerHTML = '';
 
-};
+  const lancerElements = freelancers.map(lancer => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${lancer.name} - ${lancer.occupation} - $${lancer.price}`;
+    return listItem;
+  });
 
+  averageTitle.innerText = `The average price is $${averagePrice.toFixed(2)}`;
+  lancersList.append(...lancerElements);
+}
 
-function addrandomlancer() {
-    const name = names[Math.floor(Math.random() * names.length)];
-    
-    const occupation = occupations[Math.floor(Math.random() * occupations.length)];
-    
-    const price = prices[Math.floor(Math.random() * prices.length)];
-    
-    freelancers.push({ name, occupation, price });
-    render();
-    if (freelancers.length >= maxlancers) {
-        clearInterval(addrandomlancerIntervalId);
-    }};
+function addRandomLancer() {
+  const randomName = names[Math.floor(Math.random() * names.length)];
+  const randomOccupation = occupations[Math.floor(Math.random() * occupations.length)];
+  const randomPrice = prices[Math.floor(Math.random() * prices.length)];
 
-function averageprice() {
-    const sum = freelancers.reduce((total, currentValue) => total + currentValue.price, 0);
-    
-    const average = sum / freelancers.length;
-    
-    console.log("Average price:", average);
+  freelancers.push({ name: randomName, occupation: randomOccupation, price: randomPrice });
 
-    if(freelancers.length >= maxavearge){
-        clearInterval(loadaverage);
-    }
-};
+  const totalPrices = freelancers.reduce((total, currentLancer) => total + currentLancer.price, 0);
+  averagePrice = totalPrices / freelancers.length;
 
-document.addEventListener("DOMContentLoaded", function(){
+  console.log('Average price:', averagePrice);
 
-    const div = document.querySelector("div");
-
-    const p = document.createElement("p");
-
-    p.textContent= `The average is ${averageprice()}`;
-
-    div.append(p);
-});
+  if (freelancers.length >= maxLancers) {
+    clearInterval(addRandomLancerIntervalId);
+  }
+  render();
+}
